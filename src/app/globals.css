@@ -1,26 +1,225 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --fog: #e9eef2;
+  --ink: #0f1b26;
+  --slate: #5b6b7a;
+  --signal: #0a57e0;
+  --ok: #14805a;
+  --warn: #b86e00;
+  --bad: #b3261e;
+  --paper: #ffffff;
 }
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  height: 100%;
+  margin: 0;
+}
+body {
+  background: var(--fog);
+  color: var(--ink);
+  line-height: 1.5;
+}
+button {
+  font: inherit;
+  cursor: pointer;
+}
+:focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 2px;
+}
+
+/* Intro */
+.intro {
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 12vh 1.5rem 3rem;
+}
+.intro h1 {
+  font-size: clamp(2.2rem, 7vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem;
+}
+.lede {
+  font-size: 1.15rem;
+  color: var(--slate);
+  margin: 0 0 1.5rem;
+}
+.expect {
+  padding-left: 1.1rem;
+  margin: 0 0 2rem;
+}
+.expect li {
+  margin-bottom: 0.5rem;
+}
+.primary {
+  background: var(--ink);
+  color: var(--paper);
+  border: 0;
+  border-radius: 0.6rem;
+  padding: 0.95rem 1.6rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.primary:hover {
+  background: var(--signal);
+}
+
+/* Capture stage */
+.stage {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  overflow: hidden;
+}
+.stage video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.bracket {
+  position: absolute;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0 solid rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+}
+.tl {
+  top: 5rem;
+  left: 1.25rem;
+  border-top-width: 3px;
+  border-left-width: 3px;
+}
+.tr {
+  top: 5rem;
+  right: 1.25rem;
+  border-top-width: 3px;
+  border-right-width: 3px;
+}
+.bl {
+  bottom: 13rem;
+  left: 1.25rem;
+  border-bottom-width: 3px;
+  border-left-width: 3px;
+}
+.br {
+  bottom: 13rem;
+  right: 1.25rem;
+  border-bottom-width: 3px;
+  border-right-width: 3px;
+}
+
+.topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+}
+.conn {
+  color: #fff;
+  background: rgba(15, 27, 38, 0.7);
+  padding: 0.3rem 0.7rem;
+  border-radius: 99px;
+  font-size: 0.9rem;
+}
+.conn::before {
+  content: "";
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--warn);
+  margin-right: 0.45rem;
+}
+.conn.open::before {
+  background: #3ddc97;
+}
+.conn.closed::before,
+.conn.error::before {
+  background: #ff6b61;
+}
+.ghost {
+  color: #fff;
+  background: rgba(15, 27, 38, 0.7);
+  border: 0;
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.9rem;
+}
+
+.dock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  gap: 0.9rem;
+  justify-items: center;
+}
+.feedback {
+  width: min(100%, 36rem);
+  background: rgba(15, 27, 38, 0.88);
+  color: #fff;
+  border-left: 6px solid var(--signal);
+  border-radius: 0.6rem;
+  padding: 0.9rem 1.1rem;
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+.feedback.warn {
+  border-color: var(--warn);
+}
+.feedback.error {
+  border-color: var(--bad);
+}
+.feedback.success {
+  border-color: var(--ok);
+}
+.feedback.challenge {
+  border-color: #fff;
+}
+
+/* The one memorable element: a paper tag showing the live code */
+.slip {
+  position: relative;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 0.5rem;
+  padding: 1rem 1.6rem 1rem 3rem;
+  transform: rotate(-2deg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  text-align: left;
+}
+.slip .hole {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  width: 1rem;
+  height: 1rem;
+  margin-top: -0.5rem;
+  border-radius: 50%;
+  background: #000;
+  box-shadow: inset 0 0 0 3px var(--fog);
+}
+.slip p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--slate);
+  max-width: 14rem;
+}
+.slip strong {
+  display: block;
+  font-size: 3.4rem;
+  line-height: 1.1;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+}
+.slip small {
+  color: var(--slate);
 }
